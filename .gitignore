@@ -40,3 +40,6 @@ docs/Doxyfile
 # Ignore Python scripts cache and .pyc
 tests/data/scripts/__pycache__
 **/*.pyc
+
+# Ignore build directories
+build*/
