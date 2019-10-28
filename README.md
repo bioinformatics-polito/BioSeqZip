@@ -50,3 +50,26 @@ As a result, the *ERR030900* sample will be collapsed, reporting a FASTQ file
 as output (`-f fastq`) whose name will be *collapsed.fastq* (`-b collapsed`) 
 along with a CSV report *collapsed.csv* (`--csv-report`) storing metadata about
 the collapsing procedure.
+
+### Collapsing a set FASTQ files
+*BioSeqZip* provides the capability of collapsing multiple samples, in the form of FASTQ 
+files, at once. For exploiting this feature all samples to be collapsed have to be placed
+in the same directory and the *BioSeqZip* collapser should be called with the `--input-dir`
+option. In the following the typical usage for multi-sample collapsing is provided:
+
+First of all, download a couple of FASTQ sample from the *BodyMap 2.0* dataset with the 
+following command:
+```
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR030/ERR030900/ERR030900.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR030/ERR030901/ERR030901.fastq.gz
+gzip -d ERR030900.fastq.gz
+gzip -d ERR030901.fastq.gz
+mkdir input
+mv ERR030900.fastq input
+mv ERR030901.fastq input
+```
+
+Collapsing it is as easy as typing:
+```
+bioseqzip_collapse --input-dir input -f fastq -b collapsed --csv-report
+```
