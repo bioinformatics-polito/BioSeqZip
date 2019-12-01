@@ -43,13 +43,12 @@ gzip -d ERR030900.fastq.gz
 
 Collapsing it is as easy as typing:
 ```
-bioseqzip_collapse -i ERR040900.fastq -f fastq -b collapsed --csv-report
+bioseqzip_collapse -i ERR040900.fastq -f fastq --csv-report
 ```
 
 As a result, the *ERR030900* sample will be collapsed, reporting a FASTQ file
-as output (`-f fastq`) whose name will be *collapsed.fastq* (`-b collapsed`) 
-along with a CSV report *collapsed.csv* (`--csv-report`) storing metadata about
-the collapsing procedure.
+as output (`-f fastq`) along with a CSV report *collapsed.csv* (`--csv-report`) 
+storing metadata about the collapsing procedure.
 
 ### Collapsing a set FASTQ files
 *BioSeqZip* provides the capability of collapsing multiple samples, in the form of FASTQ 
@@ -71,5 +70,16 @@ mv ERR030901.fastq input
 
 Collapsing it is as easy as typing:
 ```
-bioseqzip_collapse --input-dir input -f fastq -b collapsed --csv-report
+bioseqzip_collapse --input-dir input -f fastq --csv-report
 ```
+
+## Examples
+The tool comes with a set of examples in the form of BASH script that the interested user can
+have a look at, for better understanding how *BioSeqZip* can fit into their pipeline. Examples are in the 
+`examples` directory:
+- `01_collapsing_basics`: how to collapse single and paired-end samples and retrieving collapsing statistics such as runtime and reads/space gain.
+- `02_crossformat_collapsing`: how to collapse data where the input and output dataset format does not match (e.g. fastq to fasta, fastq to tagq, etc...)
+- `03_multisample_collapsing`: how to collapse more than one sample at once for merging sequences equal but belonging to different sequencing samples.
+- `04_star_alignment`: a real-world example of a pipeline BioSeqZip is expected to work in, where a sample is downloaded from a remote database, collapsed, aligned with STAR and the output expanded again.
+- `05_bwa_alignment`: a real-world example of a pipeline BioSeqZip is expected to work in, where a sample is downloaded from a remote database, collapsed, aligned with BWA-MEM and the output expanded again.
+- `06_bodymap_analysis`: an example of how to download a set of samples from a remote server, aligning them with BWA-MEM and expanding BWA outputs.
