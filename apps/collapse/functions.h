@@ -156,6 +156,17 @@ namespace bioseqzip {
                                    .append("\n"));
                 }
             }
+
+	    // On demand, run Z compression on output files
+	    if (settings.runGzip) {
+	        for (auto &p: results.collapsedPaths) {
+		    std::cout << "HAHAHAHAHHA" << std::endl;
+	            system(std::string("gzip ").append(p.first.generic_string()).data());
+	            if (!p.second.empty()) {
+	                system(std::string("gzip ").append(p.second.generic_string()).data());
+	            }
+	        }
+	    }
         }
 
     } // collapse

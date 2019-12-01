@@ -60,6 +60,7 @@ public:
 	fs::path outputBasename;
 	uint64_t maxOutputEntries;
 	fs::path csvReportPath;
+	bool     runGzip;
 
 	// Collapse options.
 	uint64_t maxRam;
@@ -273,6 +274,11 @@ public:
 		                                       "CSV formatted output file "
 		                                       "containing the details of the "
 		                                       "collapse operations performed."));
+
+		seqan::addOption(parser_,
+		                 seqan::ArgParseOption("g",
+		                                       "run-gzip",
+		                                       "Run GZip compression on output files."));
 
 		// Collapse settings section.
 		seqan::addSection(parser_,
@@ -754,6 +760,14 @@ public:
 			{
 				csvReportPath = outputDirPath / outputBasename;
 				csvReportPath += ".csv";
+			}
+
+			// Check if GZip output is requested.
+			runGzip = false;
+			if (seqan::isSet(parser_,
+			                 "run-gzip"))
+			{
+				runGzip = true;
 			}
 
 			// Get maximum memory value.
