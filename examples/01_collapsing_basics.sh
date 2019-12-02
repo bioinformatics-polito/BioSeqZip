@@ -59,3 +59,11 @@ bioseqzip_collapse -i ERR030882_1.fastq -p ERR030882_2 -f fastq -v 4 --csv-repor
 # Print collapsing meta-data
 cat ERR030888.collapsed.csv
 
+# RUNNING GZIP AFTER COLLAPSING
+# -----------------------------
+# For allowing even better collapsing performances, BioSeqZip gives the user the
+# capability of running Z compression on each output file the collapser produced
+# running gzip. This feature is triggered specifying the proper flag on the command
+# line.
+bioseqzip_collapse -i ERR030888.fastq -f fastq -v 4 -g
+
