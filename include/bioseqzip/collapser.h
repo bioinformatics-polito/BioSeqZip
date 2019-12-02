@@ -351,7 +351,7 @@ public:
 		}
 
 		// Once IO facilities are initialized, run the collapse procedure.
-		collapseMS_<16,
+		collapseMS_<64,
 		            TSeqRecord,
 		            TTabRecord,
 		            SequenceReader<sa::TagFileIn,
@@ -463,7 +463,7 @@ public:
         }
 
         // Once IO facilities are initialized, run the collapse procedure.
-        collapseMS_<16,
+        collapseMS_<64,
                 TSeqRecord,
                 TTabRecord,
                 SequenceReader<sa::TagFileIn,
