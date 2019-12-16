@@ -132,7 +132,7 @@ private:
 	              const std::vector<std::string>& validExtensions) noexcept
 	{
 		fs::path targetPathExt;
-
+		
 		if (fs::is_regular_file(targetPath))
 		{
 			targetPathExt = targetPath.extension();

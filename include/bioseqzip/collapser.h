@@ -346,6 +346,7 @@ public:
 			                                          sa::TagFileOut,
 			                                          TForceNoQual>(samplesPaths[i],
 			                                                        basename);
+
 			collapsedSamples.emplace_back(ssResults.collapsedPaths[0]);
 			ssStats.emplace_back(ssResults.statistics[0]);
 		}
@@ -363,6 +364,7 @@ public:
 		                                       outWriter,
 		                                       tabWriter,
 		                                       msStats);
+
 		msStats.sampleId = outputBasename.generic_string();
 		for (const auto& p : samplesPaths)
 		{

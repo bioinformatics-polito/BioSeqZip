@@ -43,7 +43,6 @@ namespace bioseqzip {
                            settings.trimLeft,
                            settings.trimRight,
                            settings.nThreads);
-
             if (settings.layout == Settings::IN_LAYOUT_SS_SINGLE_END) {
                 results = core.collapseSingleEnd<TSeqRecord,
                         TOutStream,
@@ -82,7 +81,9 @@ namespace bioseqzip {
                         validExtensions.emplace_back(e);
                     }
                 }
-
+		validExtensions.emplace_back(".bam");
+		validExtensions.emplace_back(".sam");
+	
                 if (settings.layout == Settings::IN_LAYOUT_MS_SINGLE_END) {
                     tracker.trackSingleSamples(settings.inputDirPath,
                                                validExtensions,
@@ -160,7 +161,6 @@ namespace bioseqzip {
 	    // On demand, run Z compression on output files
 	    if (settings.runGzip) {
 	        for (auto &p: results.collapsedPaths) {
-		    std::cout << "HAHAHAHAHHA" << std::endl;
 	            system(std::string("gzip ").append(p.first.generic_string()).data());
 	            if (!p.second.empty()) {
 	                system(std::string("gzip ").append(p.second.generic_string()).data());
