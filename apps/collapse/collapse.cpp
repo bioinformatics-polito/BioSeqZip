@@ -10,7 +10,7 @@ int
 main (int argc,
       char** argv)
 {
-	using TSequence = seqan::String<seqan::Dna5>;
+	using TSequence = seqan::String<seqan::Iupac>;
 	using TQuality = seqan::String<char>;
 	using TCounter = uint32_t;
 	using TBpOffset = uint8_t;
