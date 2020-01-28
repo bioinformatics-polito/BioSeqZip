@@ -75,19 +75,16 @@ namespace bioseqzip {
                     settings.outputFormat == Settings::OUT_FORMAT_TAGQ) {
                     for (const auto e : seqan::FileExtensions<seqan::Fastq>::VALUE) {
                         validExtensions.emplace_back(e);
-			validExtensions.emplace_back(std::string(e).append(".gz"));
-			validExtensions.emplace_back(std::string(e).append(".gzip"));
-
                     }
                 } else {
                     for (const auto e : seqan::FileExtensions<seqan::Fasta>::VALUE) {
                         validExtensions.emplace_back(e);
-			validExtensions.emplace_back(std::string(e).append(".gz"));
-			validExtensions.emplace_back(std::string(e).append(".gzip"));
                     }
                 }
 		validExtensions.emplace_back(".bam");
 		validExtensions.emplace_back(".sam");
+		validExtensions.emplace_back(".gz");
+		validExtensions.emplace_back(".gzip");
 	
                 if (settings.layout == Settings::IN_LAYOUT_MS_SINGLE_END) {
                     tracker.trackSingleSamples(settings.inputDirPath,
