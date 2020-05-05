@@ -10,14 +10,19 @@
 #ifndef BIOSEQZIP_APPS_COLLAPSE_SETTINGS_H
 #define BIOSEQZIP_APPS_COLLAPSE_SETTINGS_H
 
-#include <experimental/filesystem>
 #include <string>
 #include <vector>
 
 #include <seqan/arg_parse.h>
 #include <seqan/seq_io.h>
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
 
 namespace bioseqzip
 {

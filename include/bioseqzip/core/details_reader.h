@@ -13,11 +13,17 @@
 #ifndef BIOSEQZIP_BIOSEQZIP_CORE_DETAILS_READER_H
 #define BIOSEQZIP_BIOSEQZIP_CORE_DETAILS_READER_H
 
-#include <experimental/filesystem>
 #include <seqan/basic.h>
 #include <seqan/seq_io.h>
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

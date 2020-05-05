@@ -15,7 +15,6 @@
 #define BIOSEQZIP_BIOSEQZIP_CORE_SEQUENCE_WRITER_H
 
 #include <chrono>
-#include <experimental/filesystem>
 #include <seqan/basic.h>
 #include <seqan/seq_io.h>
 #include <string>
@@ -25,7 +24,14 @@
 #include "library_layout.h"
 #include "tag_io.h"
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

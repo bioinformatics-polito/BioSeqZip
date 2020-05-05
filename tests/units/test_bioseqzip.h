@@ -1,8 +1,6 @@
 #ifndef BIOSEQZIP_TESTS_UNITS_TEST_BIOSEQZIP_H
 #define BIOSEQZIP_TESTS_UNITS_TEST_BIOSEQZIP_H
 
-#include <experimental/filesystem>
-
 #include <gtest/gtest.h>
 
 #include <seqan/seq_io.h>
@@ -19,7 +17,17 @@
 #include "bioseqzip/buffer.h"
 #include "../../apps/collapse/sample_tracker.h"
 
+#if BioSeqZip_APPLE
+
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
+#else
+
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+
+#endif
 
 class TestBioSeqZip : public ::testing::Test
 {

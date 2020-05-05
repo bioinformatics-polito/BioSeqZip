@@ -11,10 +11,16 @@
 #ifndef BIOSEQZIP_BIOSEQZIP_EXPANDER_H_
 #define BIOSEQZIP_BIOSEQZIP_EXPANDER_H_
 
-#include <experimental/filesystem>
 #include <seqan/bam_io.h>
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

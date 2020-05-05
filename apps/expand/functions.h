@@ -18,8 +18,13 @@
 namespace bz = bioseqzip;
 namespace lg = cpputils;
 namespace sw = cpputils;
-namespace fs = std::experimental::filesystem;
 namespace sa = seqan;
+
+#if BioSeqZip_APPLE
+namespace fs = boost::filesystem;
+#else
+namespace fs = std::experimental::filesystem;
+#endif
 
 namespace bioseqzip
 {

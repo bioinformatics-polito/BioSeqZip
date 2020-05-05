@@ -14,12 +14,18 @@
 #define BIOSEQZIP_BIOSEQZIP_CORE_DETAILS_WRITER_H
 
 #include <chrono>
-#include <experimental/filesystem>
 #include <seqan/sequence.h>
 #include <string>
 #include <vector>
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

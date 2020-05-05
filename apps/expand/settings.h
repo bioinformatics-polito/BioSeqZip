@@ -13,7 +13,6 @@
 #ifndef BIOSEQZIP_APPS_EXPAND_SETTINGS_H_
 #define BIOSEQZIP_APPS_EXPAND_SETTINGS_H_
 
-#include <experimental/filesystem>
 #include <iostream>
 #include <string>
 
@@ -24,7 +23,14 @@
 
 #include "input_format.h"
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

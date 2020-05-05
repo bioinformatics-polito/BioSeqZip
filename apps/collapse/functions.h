@@ -19,7 +19,11 @@
 #include "settings.h"
 #include "sample_tracker.h"
 
+#if BioSeqZip_APPLE
+namespace fs = boost::filesystem;
+#else
 namespace fs = std::experimental::filesystem;
+#endif
 
 namespace bioseqzip {
     namespace collapse {

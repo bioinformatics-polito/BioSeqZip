@@ -12,7 +12,6 @@
 #ifndef BIOSEQZIP_APPS_EXPAND_SETTINGS_H
 #define BIOSEQZIP_APPS_EXPAND_SETTINGS_H
 
-#include <experimental/filesystem>
 #include <iostream>
 #include <string>
 
@@ -21,7 +20,18 @@
 
 #include "tag_io.h"
 
+#if BioSeqZip_APPLE
+
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
+#else
+
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+
+#endif
+
 namespace sa = seqan;
 
 namespace bioseqzip

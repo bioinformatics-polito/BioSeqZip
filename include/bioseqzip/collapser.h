@@ -9,7 +9,6 @@
 #define BIOSEQZIP_INCLUDE_BIOSEQZIP_COLLAPSER_H
 
 #include <array>
-#include <experimental/filesystem>
 #include <vector>
 
 #include "cpputils/cpputils.h"
@@ -26,7 +25,13 @@
 #include "bioseqzip/results_collapse.h"
 #include "bioseqzip/stats_collapse.h"
 
+#if BioSeqZip_APPLE
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#else
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
 
 namespace bioseqzip
 {

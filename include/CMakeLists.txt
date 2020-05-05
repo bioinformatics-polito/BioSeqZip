@@ -22,16 +22,16 @@ fetchcontent_declare(bioseqzip_seqan
                      seqan-v2.4.0)
 fetchcontent_getproperties(bioseqzip_seqan)
 if (NOT bioseqzip_seqan_POPULATED)
-	fetchcontent_populate(bioseqzip_seqan)
-	list(APPEND
-	     CMAKE_INCLUDE_PATH
-	     ${CMAKE_INCLUDE_PATH}
-	     ${bioseqzip_seqan_SOURCE_DIR}/include)
-	set(SEQAN_FIND_DEPENDENCIES
-	    "DEFAULT")
-	find_package(SEQAN
-	             REQUIRED
-	             HINTS ${bioseqzip_seqan_SOURCE_DIR}/util/cmake)
+    fetchcontent_populate(bioseqzip_seqan)
+    list(APPEND
+         CMAKE_INCLUDE_PATH
+         ${CMAKE_INCLUDE_PATH}
+         ${bioseqzip_seqan_SOURCE_DIR}/include)
+    set(SEQAN_FIND_DEPENDENCIES
+        "DEFAULT")
+    find_package(SEQAN
+                 REQUIRED
+                 HINTS ${bioseqzip_seqan_SOURCE_DIR}/util/cmake)
 endif ()
 add_library(BioSeqZip_SeqAn
             INTERFACE)
@@ -52,6 +52,21 @@ target_compile_options(BioSeqZip_SeqAn
                        INTERFACE
                        ${SEQAN_SEPARATED_CXX_FLAGS})
 
+# Register Boost dependency.
+if (APPLE)
+    fetchcontent_declare(bioseqzip_boost
+                         GIT_REPOSITORY
+                         https://github.com/boostorg/filesystem
+                         GIT_TAG
+                         boost-1.73.0)
+    fetchcontent_getproperties(bioseqzip_boost)
+    if (NOT bioseqzip_boost_POPULATED)
+        fetchcontent_populate(bioseqzip_boost)
+        add_subdirectory(${bioseqzip_boost_SOURCE_DIR}
+                         ${bioseqzip_boost_BINARY_DIR})
+    endif ()
+endif ()
+
 # ---------------------------------------------------------------------------
 # Configure the library global target BioSeqZip::BioSeqZip.
 # ---------------------------------------------------------------------------
@@ -62,12 +77,26 @@ target_include_directories(BioSeqZip
                            INTERFACE
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-target_link_libraries(BioSeqZip
-                      INTERFACE
-                      BioSeqZip_SeqAn
-                      pthread
-                      c++experimental                      
-                      -fopenmp)
-target_compile_definitions(BioSeqZip
-                           INTERFACE
-                           -DBioSeqZip_VERSION="${BioSeqZip_VERSION}")
+if (APPLE)
+    target_link_libraries(BioSeqZip
+                          INTERFACE
+                          BioSeqZip_SeqAn
+                          pthread
+                          Boost::filesystem
+                          -fopenmp)
+    target_compile_definitions(BioSeqZip
+                               INTERFACE
+                               -DBioSeqZip_VERSION="${BioSeqZip_VERSION}"
+                               -DBioSeqZip_APPLE=1)
+else ()
+    target_link_libraries(BioSeqZip
+                          INTERFACE
+                          BioSeqZip_SeqAn
+                          pthread
+                          stdc++fs
+                          -fopenmp)
+    target_compile_definitions(BioSeqZip
+                               INTERFACE
+                               -DBioSeqZip_VERSION="${BioSeqZip_VERSION}"
+                               -DBioSeqZip_APPLE=0)
+endif ()
