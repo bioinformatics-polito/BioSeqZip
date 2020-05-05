@@ -1,4 +1,4 @@
-#include "cpputils/cpputils.h"
+#include "bioseqzip/cpputils/cpputils.h"
 
 #include "bioseqzip/core/details_record.h"
 #include "bioseqzip/core/sequence_record.h"

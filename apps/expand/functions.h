@@ -9,7 +9,7 @@
 #ifndef BIOSEQZIP_APPS_EXPAND_FUNCTIONS_H_
 #define BIOSEQZIP_APPS_EXPAND_FUNCTIONS_H_
 
-#include "cpputils/cpputils.h"
+#include "bioseqzip/cpputils/cpputils.h"
 
 #include "bioseqzip/expander.h"
 

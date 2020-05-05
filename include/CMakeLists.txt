@@ -52,19 +52,6 @@ target_compile_options(BioSeqZip_SeqAn
                        INTERFACE
                        ${SEQAN_SEPARATED_CXX_FLAGS})
 
-# Register CppUtilities dependency.
-fetchcontent_declare(bioseqzip_cpputils
-                     GIT_REPOSITORY
-                     https://philae.polito.it/gitlab/parisi/cpputils.git
-                     GIT_TAG
-                     v0.1.2.0)
-fetchcontent_getproperties(bioseqzip_cpputils)
-if (NOT bioseqzip_cpputils_POPULATED)
-	fetchcontent_populate(bioseqzip_cpputils)
-	add_subdirectory(${bioseqzip_cpputils_SOURCE_DIR}
-	                 ${bioseqzip_cpputils_BINARY_DIR})
-endif ()
-
 # ---------------------------------------------------------------------------
 # Configure the library global target BioSeqZip::BioSeqZip.
 # ---------------------------------------------------------------------------
@@ -78,7 +65,6 @@ target_include_directories(BioSeqZip
 target_link_libraries(BioSeqZip
                       INTERFACE
                       BioSeqZip_SeqAn
-                      CppUtils
                       pthread
                       stdc++fs
                       -fopenmp)

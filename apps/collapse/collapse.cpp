@@ -1,7 +1,7 @@
 #include <bioseqzip/core/sequence_record.h>
 #include <bioseqzip/core/details_record.h>
 
-#include "cpputils/cpputils.h"
+#include "bioseqzip/cpputils/cpputils.h"
 
 #include "functions.h"
 #include "settings.h"

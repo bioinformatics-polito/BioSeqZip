@@ -10,7 +10,7 @@
 #ifndef BIOSEQZIP_APPS_COLLAPSE_FUNCTIONS_H
 #define BIOSEQZIP_APPS_COLLAPSE_FUNCTIONS_H
 
-#include "cpputils/cpputils.h"
+#include "bioseqzip/cpputils/cpputils.h"
 
 #include "bioseqzip/collapser.h"
 #include "bioseqzip/results_collapse.h"
