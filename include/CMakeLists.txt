@@ -66,7 +66,7 @@ target_link_libraries(BioSeqZip
                       INTERFACE
                       BioSeqZip_SeqAn
                       pthread
-                      stdc++fs
+                      c++experimental                      
                       -fopenmp)
 target_compile_definitions(BioSeqZip
                            INTERFACE
