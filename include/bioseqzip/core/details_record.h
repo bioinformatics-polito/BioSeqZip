@@ -14,6 +14,7 @@
 #define BIOSEQZIP_BIOSEQZIP_CORE_DETAILS_RECORD_H
 
 #include <fstream>
+#include <sstream>
 
 #include <seqan/sequence.h>
 
