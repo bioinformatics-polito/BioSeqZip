@@ -10,6 +10,8 @@
 
 include(${CMAKE_SOURCE_DIR}/cmake/FetchContent.cmake)
 
+include(ExternalProject)
+
 # ---------------------------------------------------------------------------
 # Retrieve the external projects BioSeqZip depends on.
 # ---------------------------------------------------------------------------
@@ -54,17 +56,15 @@ target_compile_options(BioSeqZip_SeqAn
 
 # Register Boost dependency.
 if (APPLE)
-    fetchcontent_declare(bioseqzip_boost
-                         GIT_REPOSITORY
-                         https://github.com/boostorg/filesystem
-                         GIT_TAG
-                         boost-1.73.0)
-    fetchcontent_getproperties(bioseqzip_boost)
-    if (NOT bioseqzip_boost_POPULATED)
-        fetchcontent_populate(bioseqzip_boost)
-        add_subdirectory(${bioseqzip_boost_SOURCE_DIR}
-                         ${bioseqzip_boost_BINARY_DIR})
-    endif ()
+    ExternalProject_Add(bioseqzip_boost
+                        GIT_REPOSITORY "http://github.com/boostorg/boost"
+                        GIT_TAG boost-1.73.0
+                        UPDATE_COMMAND "git submodule update --init"
+                        CONFIGURE_COMMAND "./bootstrap.sh --prefix=${CMAKE_BINARY_DIR}/boost"
+                        BUILD_COMMAND "./b2"
+                        INSTALL_COMMAND "./b2 install")
+    link_directories(${CMAKE_BINARY_DIR}/boost/lib/boost/)
+    include_directories(${CMAKE_BINARY_DIR}/boost/include/)
 endif ()
 
 # ---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ if (APPLE)
                           INTERFACE
                           BioSeqZip_SeqAn
                           pthread
-                          Boost::filesystem
+                          boost_filesystem
                           -fopenmp)
     target_compile_definitions(BioSeqZip
                                INTERFACE
