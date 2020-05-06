@@ -59,6 +59,7 @@ if (APPLE)
     ExternalProject_Add(bioseqzip_boost
                         GIT_REPOSITORY "http://github.com/boostorg/boost"
                         GIT_TAG boost-1.73.0
+                        GIT_SHALLOW TRUE
                         CONFIGURE_COMMAND "./bootstrap.sh --prefix=${CMAKE_BINARY_DIR}/boost"
                         BUILD_COMMAND "./b2"
                         INSTALL_COMMAND "./b2 install")
