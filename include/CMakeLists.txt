@@ -56,16 +56,20 @@ target_compile_options(BioSeqZip_SeqAn
 
 # Register Boost dependency.
 if (APPLE)
+    set(BioSeqZip_BOOST_DIR ${CMAKE_BINARY_DIR}/boost)
     ExternalProject_Add(bioseqzip_boost
                         GIT_REPOSITORY "http://github.com/boostorg/boost"
                         GIT_TAG boost-1.73.0
                         GIT_SHALLOW TRUE
-                        CONFIGURE_COMMAND "./bootstrap.sh --prefix=${CMAKE_BINARY_DIR}/boost"
-                        BUILD_COMMAND "./b2"
-                        INSTALL_COMMAND "./b2 install")
-    link_directories(${CMAKE_BINARY_DIR}/boost/lib/boost/)
-    include_directories(${CMAKE_BINARY_DIR}/boost/include/)
-endif ()
+			SOURCE_DIR ${BioSeqZip_BOOST_DIR}
+			BINARY_DIR ${BioSeqZip_BOOST_DIR}
+			INSTALL_DIR ${BioSeqZip_BOOST_DIR}
+			CONFIGURE_COMMAND ${BioSeqZip_BOOST_DIR}/bootstrap.sh --prefix=${BioSeqZip_BOOST_DIR}
+			BUILD_COMMAND ${BioSeqZip_BOOST_DIR}/b2
+			INSTALL_COMMAND ${BioSeqZip_BOOST_DIR}/b2 install)
+    link_directories(${BioSeqZip_BOOST_DIR}/lib)
+    include_directories(${BioSeqZip_BOOST_DIR}/include)
+endif()
 
 # ---------------------------------------------------------------------------
 # Configure the library global target BioSeqZip::BioSeqZip.
