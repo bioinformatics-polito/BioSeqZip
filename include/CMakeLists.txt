@@ -18,10 +18,9 @@ include(ExternalProject)
 
 # Register SeqAn dependency.
 fetchcontent_declare(bioseqzip_seqan
-                     GIT_REPOSITORY
-                     https://github.com/seqan/seqan.git
-                     GIT_TAG
-                     seqan-v2.4.0)
+                     GIT_REPOSITORY https://github.com/seqan/seqan.git
+                     GIT_TAG seqan-v2.4.0)
+                     GIT_SHALLOW TRUE
 fetchcontent_getproperties(bioseqzip_seqan)
 if (NOT bioseqzip_seqan_POPULATED)
     fetchcontent_populate(bioseqzip_seqan)
