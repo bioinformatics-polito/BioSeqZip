@@ -86,6 +86,7 @@ if (APPLE)
                           BioSeqZip_SeqAn
                           pthread
                           boost_filesystem
+			  boost_system
                           -fopenmp)
     target_compile_definitions(BioSeqZip
                                INTERFACE
