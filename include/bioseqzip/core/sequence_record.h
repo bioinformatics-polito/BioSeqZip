@@ -583,7 +583,7 @@ private:
 	inline sa::String<char>
 	_makeFastxHeader (uint64_t id) const noexcept
 	{
-		sa::String<char> header = "BIOSEQZIP|ID:";
+		sa::String<char> header = "B|ID:";
 
 		sa::append(header,
 		           std::to_string(id).data());
