@@ -55,7 +55,7 @@ target_compile_options(BioSeqZip_SeqAn
 
 # Register Boost dependency.
 if (APPLE)
-    find_package(Boost)
+    find_package(Boost COMPONENTS system filesystem)
     if (NOT Boost_FOUND)
         message(FATAL_ERROR "Boost not found! Have a look README for instruction on how to install Boost on MacOS")
     endif ()
