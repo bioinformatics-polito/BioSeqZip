@@ -918,9 +918,9 @@ private:
 				// Initialize readers and compute the maximum number of records
 				// loadable.
 				seqReaders.resize(std::min(N_WAY_MERGE,
-				                           nSamples - startIdx1));
+				                           static_cast<uint64_t>(nSamples - startIdx1)));
 				samplesIds.resize(std::min(N_WAY_MERGE,
-				                           nSamples - startIdx1));
+				                           static_cast<unit64_t>(nSamples - startIdx1)));
 				std::iota(samplesIds.begin(),
 				          samplesIds.end(),
 				          startIdx1);
