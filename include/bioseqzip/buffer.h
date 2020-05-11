@@ -590,8 +590,9 @@ private:
 	computeMaxThreads_ (uint64_t nThreads,
 	                    uint64_t recordsPerThread) noexcept
 	{
+		uint64_t temp = buffer_.size() / recordsPerThread;
 		uint64_t theoricThreads = std::max(1ul,
-		                                   buffer_.size() / recordsPerThread);
+		                                   temp);
 
 		return std::min(nThreads,
 		                theoricThreads);
