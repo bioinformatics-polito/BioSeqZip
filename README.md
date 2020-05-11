@@ -6,7 +6,7 @@ Sequencing datasets.
 
 ## Install from sources
 *BioSeqZip* is publicly available on GitHub. For downloading and installing
-the most recent version of the tool, follow these instructions:
+the most recent version of the tool, run the following instructions.
 ```
 # Download the sources from GitHub
 git clone https://github.com/bioinformatics-polito/BioSeqZip.git bioseqzip
@@ -21,6 +21,13 @@ make
 
 # Move the binaries where you prefer
 cp apps/bioseqzip* /usr/local/bin
+```
+
+### BioSeqZip on MacOS
+MacOS users are asked to install Boost libraries and OpenMP support using `brew`, running the following commands:
+```
+brew install boost
+brew install libomp
 ```
 
 ## Usage
