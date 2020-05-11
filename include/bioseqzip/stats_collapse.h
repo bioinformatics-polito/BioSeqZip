@@ -37,8 +37,8 @@ public:
 	             const std::vector<StatsCollapse>& statistics) noexcept
 	{
 		std::ofstream outStream;
-
-		outStream.open(outputPath);
+		
+		outStream.open(outputPath.c_str());
 		outStream << getHeaderString_() << std::endl;
 		for (const auto& s : statistics)
 		{
