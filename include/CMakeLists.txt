@@ -63,6 +63,7 @@ if (APPLE)
 			SOURCE_DIR ${BioSeqZip_BOOST_DIR}
 			BINARY_DIR ${BioSeqZip_BOOST_DIR}
 			INSTALL_DIR ${BioSeqZip_BOOST_DIR}
+			UPDATE_COMMAND ""
 			CONFIGURE_COMMAND ${BioSeqZip_BOOST_DIR}/bootstrap.sh --prefix=${BioSeqZip_BOOST_DIR}
 			BUILD_COMMAND ${BioSeqZip_BOOST_DIR}/b2
 			INSTALL_COMMAND ${BioSeqZip_BOOST_DIR}/b2 install)
