@@ -55,20 +55,26 @@ target_compile_options(BioSeqZip_SeqAn
 
 # Register Boost dependency.
 if (APPLE)
-    set(BioSeqZip_BOOST_DIR ${CMAKE_BINARY_DIR}/boost)
-    ExternalProject_Add(bioseqzip_boost
-                        GIT_REPOSITORY "http://github.com/boostorg/boost"
-                        GIT_TAG boost-1.73.0
-                        GIT_SHALLOW TRUE
-			SOURCE_DIR ${BioSeqZip_BOOST_DIR}
-			BINARY_DIR ${BioSeqZip_BOOST_DIR}
-			INSTALL_DIR ${BioSeqZip_BOOST_DIR}
-			UPDATE_COMMAND ""
-			CONFIGURE_COMMAND ${BioSeqZip_BOOST_DIR}/bootstrap.sh --prefix=${BioSeqZip_BOOST_DIR}
-			BUILD_COMMAND ${BioSeqZip_BOOST_DIR}/b2
-			INSTALL_COMMAND ${BioSeqZip_BOOST_DIR}/b2 install)
-    link_directories(${BioSeqZip_BOOST_DIR}/lib)
-    include_directories(${BioSeqZip_BOOST_DIR}/include)
+    find_package(Boost)
+    if (NOT Boost_FOUND)
+        message(FATAL "Boost not found! Have a look README for instruction on how to install Boost on MacOS")
+    endif ()
+#    set(BioSeqZip_BOOST_DIR ${CMAKE_BINARY_DIR}/boost)
+#    ExternalProject_Add(bioseqzip_boost
+#                        GIT_REPOSITORY "http://github.com/boostorg/boost"
+#                        GIT_TAG boost-1.73.0
+#                        GIT_SHALLOW TRUE
+#			SOURCE_DIR ${BioSeqZip_BOOST_DIR}
+#			BINARY_DIR ${BioSeqZip_BOOST_DIR}
+#			INSTALL_DIR ${BioSeqZip_BOOST_DIR}
+#			UPDATE_COMMAND ""
+#			CONFIGURE_COMMAND ${BioSeqZip_BOOST_DIR}/bootstrap.sh --prefix=${BioSeqZip_BOOST_DIR}
+#			BUILD_COMMAND ${BioSeqZip_BOOST_DIR}/b2
+#			INSTALL_COMMAND ${BioSeqZip_BOOST_DIR}/b2 install)
+#    link_directories(${BioSeqZip_BOOST_DIR}/lib)
+#    include_directories(${BioSeqZip_BOOST_DIR}/include)
+    link_directories(${Boost_LIBRARY_DIRS})
+    include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
 # ---------------------------------------------------------------------------
@@ -86,8 +92,8 @@ if (APPLE)
                           INTERFACE
                           BioSeqZip_SeqAn
                           pthread
-                          boost_filesystem
-			  boost_system
+                          Boost::system
+			  Boost::filesystem
                           -fopenmp)
     target_compile_definitions(BioSeqZip
                                INTERFACE
