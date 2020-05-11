@@ -36,8 +36,9 @@ brew install boost
 brew install libomp
 ```
 
-At last, use the following CMake command:
+At last, run the following commands for building and installing the tool:
 ```
+# Download the sources from GitHub
 git clone https://github.com/bioinformatics-polito/BioSeqZip.git bioseqzip
 
 # Create a build directory
@@ -50,6 +51,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release                                             
          -DOpenMP_CXX_LIB_NAMES="omp"                                                   \
          -DOpenMP_omp_LIBRARY=$(brew --prefix libomp)/lib/libomp.a
 make
+
+# Move the binaries where you prefer
+cp apps/bioseqzip* /usr/local/bin
 ```
 
 ## Usage
