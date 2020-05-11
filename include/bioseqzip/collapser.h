@@ -8,6 +8,7 @@
 #ifndef BIOSEQZIP_INCLUDE_BIOSEQZIP_COLLAPSER_H
 #define BIOSEQZIP_INCLUDE_BIOSEQZIP_COLLAPSER_H
 
+#include <algorithm>
 #include <array>
 #include <vector>
 
