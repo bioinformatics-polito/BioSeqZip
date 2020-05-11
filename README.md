@@ -4,7 +4,7 @@ BioSeqZip - An exact collapser for Second-Generation Sequencing datasets.
 *BioSeqZip* is a tool for performing exact collapsing of Second-Generation 
 Sequencing datasets.
 
-## Install from sources on Linux
+## Install from sources
 *BioSeqZip* is publicly available on GitHub. For downloading and installing the most recent version of the tool, run the following instructions.
 
 ### Linux
@@ -25,7 +25,7 @@ cp apps/bioseqzip* /usr/local/bin
 ```
 
 ### MacOS
-MacOS users are asked to install Boost libraries and OpenMP support using `brew`[https://brew.sh/]. Brew can be installed running the following command:
+MacOS users are asked to install Boost libraries and OpenMP support using `brew` (https://brew.sh/). Brew can be installed running the following command:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
