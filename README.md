@@ -24,12 +24,18 @@ cp apps/bioseqzip* /usr/local/bin
 ```
 
 ### BioSeqZip on MacOS
-MacOS users are asked to install Boost libraries and OpenMP support using `brew`, running the following commands:
+MacOS users are asked to install Boost libraries and OpenMP support using `brew`. Brew can be installed running the following command:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
+
+Once `brew` is installed, required dependencies can be installed running:
 ```
 brew install boost
 brew install libomp
 ```
-And to substitute with
+
+At last, use the following CMake command:
 ```
 cmake .. -DCMAKE_BUILD_TYPE=Release                                                     \
          -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include" \
