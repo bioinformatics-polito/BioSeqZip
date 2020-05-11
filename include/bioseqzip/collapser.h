@@ -913,14 +913,16 @@ private:
 
 			while (startIdx1 < nSamples)
 			{
+				uint64_t temp = nSamples - startIdx1;
+				
 				bytesDataRatio = bytesSeqRatio * N_WAY_MERGE + bytesTabRatio;
 
 				// Initialize readers and compute the maximum number of records
 				// loadable.
 				seqReaders.resize(std::min(N_WAY_MERGE,
-				                           static_cast<uint64_t>(nSamples - startIdx1)));
+				                           temp));
 				samplesIds.resize(std::min(N_WAY_MERGE,
-				                           static_cast<unit64_t>(nSamples - startIdx1)));
+				                           temp));
 				std::iota(samplesIds.begin(),
 				          samplesIds.end(),
 				          startIdx1);
