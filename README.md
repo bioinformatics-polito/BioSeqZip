@@ -29,6 +29,13 @@ MacOS users are asked to install Boost libraries and OpenMP support using `brew`
 brew install boost
 brew install libomp
 ```
+And to substitute with
+```
+cmake .. -DCMAKE_BUILD_TYPE=Release                                                     \
+         -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include" \
+         -DOpenMP_CXX_LIB_NAMES="omp"                                                   \
+         -DOpenMP_omp_LIBRARY=$(brew --prefix libomp)/lib/libomp.a
+```
 
 ## Usage
 For having an idea of the capabilities of *BioSeqZip* you can print the
