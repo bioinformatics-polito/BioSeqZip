@@ -4,9 +4,10 @@ BioSeqZip - An exact collapser for Second-Generation Sequencing datasets.
 *BioSeqZip* is a tool for performing exact collapsing of Second-Generation 
 Sequencing datasets.
 
-## Install from sources
-*BioSeqZip* is publicly available on GitHub. For downloading and installing
-the most recent version of the tool, run the following instructions.
+## Install from sources on Linux
+*BioSeqZip* is publicly available on GitHub. For downloading and installing the most recent version of the tool, run the following instructions.
+
+### Linux
 ```
 # Download the sources from GitHub
 git clone https://github.com/bioinformatics-polito/BioSeqZip.git bioseqzip
@@ -23,8 +24,8 @@ make
 cp apps/bioseqzip* /usr/local/bin
 ```
 
-### BioSeqZip on MacOS
-MacOS users are asked to install Boost libraries and OpenMP support using `brew`. Brew can be installed running the following command:
+### MacOS
+MacOS users are asked to install Boost libraries and OpenMP support using `brew`[https://brew.sh/]. Brew can be installed running the following command:
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
@@ -37,10 +38,18 @@ brew install libomp
 
 At last, use the following CMake command:
 ```
+git clone https://github.com/bioinformatics-polito/BioSeqZip.git bioseqzip
+
+# Create a build directory
+mkdir bioseqzip/build
+cd bioseqzip/build
+
+# Configure and build the tool
 cmake .. -DCMAKE_BUILD_TYPE=Release                                                     \
          -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I$(brew --prefix libomp)/include" \
          -DOpenMP_CXX_LIB_NAMES="omp"                                                   \
          -DOpenMP_omp_LIBRARY=$(brew --prefix libomp)/lib/libomp.a
+make
 ```
 
 ## Usage
