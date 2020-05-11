@@ -57,7 +57,7 @@ target_compile_options(BioSeqZip_SeqAn
 if (APPLE)
     find_package(Boost)
     if (NOT Boost_FOUND)
-        message(FATAL "Boost not found! Have a look README for instruction on how to install Boost on MacOS")
+        message(FATAL_ERROR "Boost not found! Have a look README for instruction on how to install Boost on MacOS")
     endif ()
 #    set(BioSeqZip_BOOST_DIR ${CMAKE_BINARY_DIR}/boost)
 #    ExternalProject_Add(bioseqzip_boost
