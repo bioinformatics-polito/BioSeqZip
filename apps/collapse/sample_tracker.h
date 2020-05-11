@@ -97,7 +97,7 @@ public:
 
 		samples.clear();
 		paired.clear();
-		matchFileStream.open(matchFilePath);
+		matchFileStream.open(matchFilePath.c_str());
 		while (!matchFileStream.eof())
 		{
 			auto comaOffset = 0ul;
