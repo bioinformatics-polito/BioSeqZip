@@ -45,3 +45,4 @@ tests/data/scripts/__pycache__
 build*/
 
 test_*
+.vscode
