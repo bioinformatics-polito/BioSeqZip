@@ -405,7 +405,7 @@ public:
 	template <typename TEqComparator>
 	inline auto
 	collapse (uint64_t nThreads,
-	          TEqComparator eqComparator) noexcept
+			  TEqComparator eqComparator) noexcept
 	{
 		constexpr auto minRecordsPerThreads = 1ul << 10;
 

@@ -258,12 +258,12 @@ TEST_F (TestBuffer,
 			            return left.getSequence() < right.getSequence();
 		            });
 		buffer.collapse(i,
-		                [] (auto& left,
-		                    auto& right)
-		                {
-			                return left.getSequence() ==
-			                       right.getSequence();
-		                });
+						[] (auto& left,
+							auto& right)
+						{
+							return left.getSequence() ==
+									right.getSequence();
+						});
 		buffer.storeIf(writer,
 		               [] (const auto& record)
 		               {
@@ -313,12 +313,12 @@ TEST_F(TestBuffer,
 			                        right.getSequence();
 		                 });
 		splitBuffer.collapse(1ul,
-		                     [] (const auto& left,
-		                         const auto& right)
-		                     {
-			                     return left.getSequence() ==
-			                            right.getSequence();
-		                     });
+				[] (const auto& left,
+					const auto& right)
+				{
+					return left.getSequence() ==
+						right.getSequence();
+				});
 		splitBuffer.storeIf(splitWriter,
 		                    [] (const auto& record)
 		                    {

@@ -47,7 +47,8 @@ namespace bioseqzip {
                 results = core.collapseSingleEnd<TSeqRecord,
                         TOutStream,
                         TNoQuals>(settings.inputPath,
-                                  settings.outputBasename);
+                                  settings.outputBasename,
+                                  bioseqzip::MirtraceMode::Disabled);
             } else if (settings.layout == Settings::IN_LAYOUT_SS_PAIRED_END) {
                 results = core.collapsePairedEnd<TSeqRecord,
                         TOutStream,
@@ -65,6 +66,12 @@ namespace bioseqzip {
                         TNoQuals>(settings.inputPath,
                                   settings.bpOffset,
                                   settings.outputBasename);
+            } else if (settings.layout == Settings::IN_LAYOUT_SS_MIRTRACE) {
+                results = core.collapseSingleEnd<TSeqRecord,
+                        TOutStream,
+                        TNoQuals>(settings.inputPath,
+                                  settings.outputBasename,
+                                  bioseqzip::MirtraceMode::SingleSample);
             } else {
                 SampleTracker tracker;
                 std::vector<std::string> validExtensions;
@@ -94,7 +101,8 @@ namespace bioseqzip {
                                                      TTabRecord,
                                                      TOutStream,
                                                      TNoQuals>(samplesPaths,
-                                                               settings.outputBasename);
+                                                               settings.outputBasename,
+                                                               bioseqzip::MirtraceMode::Disabled);
                 } else if (settings.layout ==
                            Settings::IN_LAYOUT_MS_PAIRED_END) {
                     std::vector<fs::path> pairedPaths;
@@ -121,6 +129,16 @@ namespace bioseqzip {
                     tracker.trackSingleSamples(settings.inputDirPath,
                                                validExtensions,
                                                samplesPaths);
+                } else if (settings.layout == Settings::IN_LAYOUT_MS_MIRTRACE) {
+                    tracker.trackSingleSamples(settings.inputDirPath,
+                                               validExtensions,
+                                               samplesPaths);
+                    results = core.collapseSingleEnd<TSeqRecord,
+                                                     TTabRecord,
+                                                     TOutStream,
+                                                     TNoQuals>(samplesPaths,
+                                                               settings.outputBasename,
+                                                               bioseqzip::MirtraceMode::MultiSample);
                 } else {
                     std::vector<fs::path> pairedPaths;
 

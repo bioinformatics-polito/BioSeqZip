@@ -32,6 +32,16 @@ namespace bioseqzip
 {
 
 /**
+ * Enum used to select Mirtrace behaviour in collapsing routines.
+ */
+enum class MirtraceMode : uint8_t {
+	Disabled	 = 0,
+	SingleSample = 1,
+	MultiSample  = 2
+};
+
+
+/**
  * Class providing facilities for collapsing a single sample. It is able to
  * handle both single-end and paired-end, interleaved or breakpoint library
  * layouts.
@@ -90,7 +100,8 @@ public:
 	          typename TForceNoQual>
 	inline auto
 	collapseSingleEnd (const fs::path& samplePath,
-	                   const fs::path& outputBasename) noexcept
+					   const fs::path& outputBasename,
+					   MirtraceMode mirtraceMode) noexcept
 	{
 		StatsCollapse                stats;
 		cpputils::Chronometer<>      timer;
@@ -118,6 +129,7 @@ public:
 		collapseSS_(reader,
 		            tmpWriter,
 		            outWriter,
+					mirtraceMode,
 		            stats);
 		stats.sampleId = outputBasename.generic_string();
 		stats.rawSpace = fs::file_size(samplePath);
@@ -167,6 +179,7 @@ public:
 		collapseSS_(reader,
 		            tmpWriter,
 		            outWriter,
+					MirtraceMode::Disabled,
 		            stats);
 		stats.sampleId = outputBasename.generic_string();
 		stats.rawSpace = fs::file_size(samplePath);
@@ -216,6 +229,7 @@ public:
 		collapseSS_(reader,
 		            tmpWriter,
 		            outWriter,
+					MirtraceMode::Disabled,
 		            stats);
 		stats.sampleId = outputBasename.generic_string();
 		stats.rawSpace = fs::file_size(samplePath);
@@ -266,6 +280,7 @@ public:
 		collapseSS_(reader,
 		            tmpWriter,
 		            outWriter,
+					MirtraceMode::Disabled,
 		            stats);
 		stats.sampleId = outputBasename.generic_string();
 		stats.rawSpace = fs::file_size(samplePath);
@@ -287,7 +302,8 @@ public:
 	          typename TForceNoQual>
 	inline auto
 	collapseSingleEnd (const std::vector<fs::path>& samplesPaths,
-	                   const fs::path& outputBasename) noexcept
+					   const fs::path& outputBasename,
+					   MirtraceMode mirtraceMode) noexcept
 	{
 		std::vector<StatsCollapse>       ssStats;
 		StatsCollapse                    msStats;
@@ -345,7 +361,8 @@ public:
 			ssResults = ssCollapser.collapseSingleEnd<TSeqRecord,
 			                                          sa::TagFileOut,
 			                                          TForceNoQual>(samplesPaths[i],
-			                                                        basename);
+			                                                        basename,
+																    mirtraceMode);
 
 			collapsedSamples.emplace_back(ssResults.collapsedPaths[0]);
 			ssStats.emplace_back(ssResults.statistics[0]);
@@ -580,6 +597,7 @@ private:
 	                       TOutWriter& outWriter,
 	                       Buffer<TRecord>& buffer,
 	                       uint64_t maxLoadable,
+	                       MirtraceMode mirtraceMode,
 	                       StatsCollapse& stats) noexcept
 	{
 		auto loaded    = 0ul;
@@ -597,19 +615,27 @@ private:
 				                           trimRight_);
 			               });
 		}
-		buffer.sort(nThreads_,
-		            [] (const auto& left,
-		                const auto& right)
-		            {
-			            return left.getSequence() < right.getSequence();
-		            });
-		collapsed = buffer.collapse(nThreads_,
-		                            [] (const auto& left,
-		                                const auto& right)
-		                            {
-			                            return left.getSequence() ==
-			                                   right.getSequence();
-		                            });
+		if (mirtraceMode == MirtraceMode::Disabled ||
+			mirtraceMode == MirtraceMode::MultiSample)
+		{	
+			buffer.sort(nThreads_,
+						[] (const auto& left,
+							const auto& right)
+						{
+							return left.getSequence() < right.getSequence();
+						});
+		}
+		if (mirtraceMode == MirtraceMode::Disabled){
+			collapsed = buffer.collapse(nThreads_,
+										[] (const auto& left,
+											const auto& right)
+										{
+											return left.getSequence() ==
+												   right.getSequence();
+										});
+		}
+
+        
 
 		// If the reader stream has no more data to read, forward the content
 		// for the buffer directly to the output directory; otherwise, start
@@ -644,19 +670,26 @@ private:
 						                           trimRight_);
 					               });
 				}
-				buffer.sort(nThreads_,
-				            [] (const auto& left,
-				                const auto& right)
-				            {
-					            return left.getSequence() < right.getSequence();
-				            });
-				collapsed = buffer.collapse(nThreads_,
-				                            [] (const auto& left,
-				                                const auto& right)
-				                            {
-					                            return left.getSequence() ==
-					                                   right.getSequence();
-				                            });
+				if (mirtraceMode == MirtraceMode::Disabled ||
+					mirtraceMode == MirtraceMode::MultiSample)
+				{	
+					buffer.sort(nThreads_,
+								[] (const auto& left,
+									const auto& right)
+								{
+									return left.getSequence() < right.getSequence();
+								});
+				}
+				if (mirtraceMode == MirtraceMode::Disabled){
+					collapsed = buffer.collapse(nThreads_,
+												[] (const auto& left,
+													const auto& right)
+												{
+													return left.getSequence() ==
+														   right.getSequence();
+												});
+				}
+				
 				if (loaded > 0)
 				{
 					tmpWriter.switchSink();
@@ -762,6 +795,7 @@ private:
 	                            TSeqRecord>& tmpWriter,
 	             SequenceWriter<TOutStream,
 	                            TSeqRecord>& outWriter,
+				 MirtraceMode mirtraceMode,
 	             StatsCollapse& stats) noexcept
 	{
 		constexpr auto RAMSafetyFactor = 1.65;
@@ -782,6 +816,7 @@ private:
 		                      outWriter,
 		                      buffer,
 		                      loadable,
+		                      mirtraceMode,
 		                      stats);
 		buffer.reset();
 

@@ -37,6 +37,8 @@ public:
 	static constexpr uint8_t IN_LAYOUT_MS_INTERLEAVED = 6;
 	static constexpr uint8_t IN_LAYOUT_MS_BREAKPOINT  = 7;
 	static constexpr uint8_t IN_LAYOUT_MS_MATCH_FILE  = 8;
+	static constexpr uint8_t IN_LAYOUT_SS_MIRTRACE    = 9;
+	static constexpr uint8_t IN_LAYOUT_MS_MIRTRACE    = 10;
 
 	static constexpr uint8_t OUT_FORMAT_FASTA = 0;
 	static constexpr uint8_t OUT_FORMAT_FASTQ = 1;
@@ -52,6 +54,7 @@ public:
 	bool     interleaved;
 	uint64_t bpOffset;
 	uint8_t  layout;
+	bool     mirtraceInput;
 
 	// Output options.
 	uint8_t  outputFormat;
@@ -202,6 +205,13 @@ public:
 		seqan::setMinValue(parser_,
 		                   "breakpoint",
 		                   "1");
+
+		seqan::addOption(parser_,
+						 seqan::ArgParseOption("",
+											   "mirtrace-input",
+											   "Flag signaling that the input "
+											   "dataset is coming from a mirtrace "
+											   "output."));
 
 		// Output settings section.
 		std::vector<std::string> valid_output_formats;
@@ -431,6 +441,8 @@ public:
 		                            "breakpoint");
 		bool matchFileSet   = isSet(parser_,
 		                            "match-file");
+		bool mirTraceSet   = isSet(parser_,
+		                           "mirtrace-input");
 
 		if (inputSet &&
 		    !inputDirSet &&
@@ -438,7 +450,8 @@ public:
 		    !pairedDirSet &&
 		    !interleavedSet &&
 		    !breakpointSet &&
-		    !matchFileSet)
+		    !matchFileSet &&
+			!mirTraceSet)
 		{
 			layout = IN_LAYOUT_SS_SINGLE_END;
 		}
@@ -448,7 +461,8 @@ public:
 		         !pairedDirSet &&
 		         !interleavedSet &&
 		         !breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_SS_PAIRED_END;
 		}
@@ -458,7 +472,8 @@ public:
 		         !pairedDirSet &&
 		         interleavedSet &&
 		         !breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_SS_INTERLEAVED;
 		}
@@ -468,9 +483,21 @@ public:
 		         !pairedDirSet &&
 		         !interleavedSet &&
 		         breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_SS_BREAKPOINT;
+		}
+		else if (inputSet &&
+				 !inputDirSet &&
+				 !pairedSet &&
+				 !pairedDirSet &&
+				 !interleavedSet &&
+				 !breakpointSet &&
+				 !matchFileSet &&
+				 mirTraceSet)
+		{
+			layout = IN_LAYOUT_SS_MIRTRACE;
 		}
 		else if (!inputSet &&
 		         inputDirSet &&
@@ -478,7 +505,8 @@ public:
 		         !pairedDirSet &&
 		         !interleavedSet &&
 		         !breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_MS_SINGLE_END;
 		}
@@ -488,7 +516,8 @@ public:
 		         pairedDirSet &&
 		         !interleavedSet &&
 		         !breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_MS_PAIRED_END;
 		}
@@ -498,7 +527,8 @@ public:
 		         !pairedDirSet &&
 		         interleavedSet &&
 		         !breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_MS_INTERLEAVED;
 		}
@@ -508,7 +538,8 @@ public:
 		         !pairedDirSet &&
 		         !interleavedSet &&
 		         breakpointSet &&
-		         !matchFileSet)
+		         !matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_MS_BREAKPOINT;
 		}
@@ -518,9 +549,21 @@ public:
 		         !pairedDirSet &&
 		         !interleavedSet &&
 		         !breakpointSet &&
-		         matchFileSet)
+		         matchFileSet &&
+		         !mirTraceSet)
 		{
 			layout = IN_LAYOUT_MS_MATCH_FILE;
+		}
+		else if (!inputSet &&
+		         inputDirSet &&
+		         !pairedSet &&
+		         !pairedDirSet &&
+		         !interleavedSet &&
+		         !breakpointSet &&
+		         !matchFileSet &&
+		         mirTraceSet)
+		{
+			layout = IN_LAYOUT_MS_MIRTRACE;
 		}
 		else
 		{
@@ -681,6 +724,9 @@ public:
 				                      "breakpoint");
 			}
 
+			mirtraceInput = seqan::isSet(parser_,
+			                             "mirtrace-input");
+
 			// Set input database layout.
 			setInputLayout();
 
@@ -834,6 +880,12 @@ public:
 			str += "\tBreakpoint          : " + std::to_string(bpOffset) +
 			       "\n";
 		}
+		else if (layout == IN_LAYOUT_SS_MIRTRACE)
+		{
+			str += "\tInput layout        : single-sample, mirtrace\n";
+			str += "\tInput path          : " + inputPath.generic_string() +
+			       "\n";
+		}
 		else if (layout == IN_LAYOUT_MS_SINGLE_END)
 		{
 			str += "\tInput layout        : multi-samples, single-end\n";
@@ -860,6 +912,12 @@ public:
 			str += "\tInput directory     : " + inputPath.generic_string() +
 			       "\n";
 			str += "\tBreakpoint          : " + std::to_string(bpOffset) +
+			       "\n";
+		}
+		else if (layout == IN_LAYOUT_MS_MIRTRACE)
+		{
+			str += "\tInput layout        : multi-samples, mirtrace\n";
+			str += "\tInput path          : " + inputPath.generic_string() +
 			       "\n";
 		}
 		else

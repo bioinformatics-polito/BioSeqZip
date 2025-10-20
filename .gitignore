@@ -43,3 +43,5 @@ tests/data/scripts/__pycache__
 
 # Ignore build directories
 build*/
+
+test_*

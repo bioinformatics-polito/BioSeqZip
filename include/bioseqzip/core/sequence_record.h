@@ -15,6 +15,8 @@
 #define BIOSEQZIP_BIOSEQZIP_CORE_SEQUENCE_RECORD_H
 
 #include <seqan/seq_io.h>
+#include <string>
+#include <cctype>
 
 #include "tag_io.h"
 
@@ -245,17 +247,53 @@ public:
 	{
 		sa::String<char> meta;
 
+		// Read the record header, sequence and qualities from the SeqAn stream.
 		sa::readRecord(meta,
 		               tag_,
 		               qual_,
 		               source);
+
+		// Try to extract a mirtrace-like count from the header. The header may
+		// contain patterns like "seq_1_x12345 rnatype:mirna". We look for the
+		// substring "_x" followed by digits and parse those digits as the
+		// overall count. If the pattern is not found, keep default overall_ = 0
+		// (one will be assigned later if not overridden by tagx input).
+
+		// Convert SeqAn string to std::string for easier parsing.
+		std::string headerStr(sa::begin(meta), sa::end(meta));
+		overall_ = static_cast<TCounter>(0);
+		for (size_t i = 0; i + 2 < headerStr.size(); ++i)
+		{
+			if (headerStr[i] == '_' && (headerStr[i+1] == 'x' || headerStr[i+1] == 'X'))
+			{
+				size_t j = i + 2;
+				// collect digits after _x
+				size_t start = j;
+				while (j < headerStr.size() && std::isdigit(static_cast<unsigned char>(headerStr[j])))
+					++j;
+				if (j > start)
+				{
+					// parse digits into integer; guard against overflow by using stoull
+					try {
+						unsigned long long val = std::stoull(headerStr.substr(start, j - start));
+						overall_ = static_cast<TCounter>(val);
+						break; // stop after first match
+					} catch (...) {
+						// parsing failed; leave overall_ as 0
+					}
+				}
+			}
+		}
 		sa::shrinkToFit(tag_);
 		sa::shrinkToFit(qual_);
 		if (TForceNoQual::value)
 		{
 			_clearQual();
 		}
-		overall_  = static_cast<TCounter>(1);
+		// If overall_ is still zero (no count in header), default to 1 for
+		// fastx records to preserve previous behavior.
+		if (overall_ == static_cast<TCounter>(0))
+			overall_ = static_cast<TCounter>(1);
 		bpOffset_ = bpOffset;
 	}
 
